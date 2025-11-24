@@ -1,0 +1,13 @@
+# Archivos compilados y temporales de Maven
+target/
+*.log
+
+# Archivos de configuración de usuario de VS Code
+.vscode/
+.settings/
+.classpath
+.project
+
+# Archivos de sistema operativo basura
+.DS_Store
+Thumbs.db

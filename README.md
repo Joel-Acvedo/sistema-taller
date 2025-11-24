@@ -1,4 +1,3 @@
-Markdown
 
 # 🔧 Sistema de Gestión Inteligente para Taller Automotriz
 
@@ -31,6 +30,8 @@ Cada movimiento en la base de datos deja una huella digital.
 
 ### 🔔 4. "El Secretario" (CRM Proactivo)
 El sistema aprende de los servicios realizados (ej. Afinación cada 6 meses) y programa recordatorios automáticos para avisar al dueño 30 días antes de la próxima visita sugerida.
+
+
 
 ---
 
@@ -66,48 +67,175 @@ El núcleo del sistema corre sobre **PostgreSQL**. A continuación se muestra la
 <summary><strong>Ver Esquema de Base de Datos (SQL)</strong></summary>
 
 ```sql
--- TABLAS PRINCIPALES DEL SISTEMA TALLER GESA
+-- =================================================================================
+-- SCRIPT MAESTRO V6.0: TALLER GESA (Con Triggers Automáticos de Fechas)
+-- =================================================================================
 
--- 1. USUARIOS (Seguridad y Auditoría)
+-- ⚠️ LIMPIEZA TOTAL
+DROP TABLE IF EXISTS detalles_cotizacion CASCADE;
+DROP TABLE IF EXISTS cotizaciones CASCADE;
+DROP TABLE IF EXISTS precios_mano_obra CASCADE;
+DROP TABLE IF EXISTS refacciones CASCADE;
+DROP TABLE IF EXISTS catalogo_servicios CASCADE;
+DROP TABLE IF EXISTS autos CASCADE;
+DROP TABLE IF EXISTS membresias CASCADE;
+DROP TABLE IF EXISTS clientes CASCADE;
+DROP TABLE IF EXISTS usuarios CASCADE;
+
+-- =================================================================================
+-- 1. TABLA USUARIOS
+-- =================================================================================
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
+    nombre_completo VARCHAR(100) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
-    rol VARCHAR(20) NOT NULL -- 'ADMIN', 'VENDEDOR', 'MECANICO'
+    password_hash VARCHAR(255) NOT NULL,
+    rol VARCHAR(20) NOT NULL,
+    activo BOOLEAN DEFAULT TRUE,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 2. AUTOS (El corazón del filtro de precios)
+-- =================================================================================
+-- 2. TABLA CLIENTES
+-- =================================================================================
+CREATE TABLE clientes (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    telefono VARCHAR(20),
+    email VARCHAR(100),
+    rfc VARCHAR(13),
+    razon_social_fiscal VARCHAR(255),
+    regimen_fiscal VARCHAR(100),
+    cp_fiscal VARCHAR(10),
+    uso_cfdi VARCHAR(100),
+    email_facturacion VARCHAR(100),
+    creado_por_id INT,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_audit_creador_cli FOREIGN KEY (creado_por_id) REFERENCES usuarios(id)
+);
+
+-- =================================================================================
+-- 3. TABLA MEMBRESÍAS
+-- =================================================================================
+CREATE TABLE membresias (
+    id SERIAL PRIMARY KEY,
+    cliente_id INT NOT NULL UNIQUE, 
+    fecha_vencimiento DATE NOT NULL,
+    activa BOOLEAN DEFAULT TRUE,
+    creado_por_id INT,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_cliente_membresia FOREIGN KEY (cliente_id) REFERENCES clientes(id)
+);
+
+-- =================================================================================
+-- 4. TABLA AUTOS (Con Último y Próximo Servicio)
+-- =================================================================================
 CREATE TABLE autos (
     id SERIAL PRIMARY KEY,
-    motor_categoria VARCHAR(20) NOT NULL, -- '4 cil', '6 cil'...
-    combustible VARCHAR(20) NOT NULL, -- 'Gasolina', 'Diesel'
-    fecha_proximo_servicio DATE -- Recordatorio automático
+    cliente_id INT NOT NULL,
+    marca VARCHAR(50) NOT NULL,
+    modelo VARCHAR(50) NOT NULL,
+    ano INT NOT NULL,
+    motor_categoria VARCHAR(20) NOT NULL,
+    combustible VARCHAR(20) NOT NULL,
+    placas VARCHAR(20),
+    vin VARCHAR(50),
+    
+    -- 🔔 EL SECRETARIO AUTOMÁTICO MEJORADO
+    fecha_ultimo_servicio DATE, -- Se llena solo con el Trigger
+    fecha_proximo_servicio DATE, -- Se calcula solo con el Trigger
+    
+    creado_por_id INT,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_cliente_auto FOREIGN KEY (cliente_id) REFERENCES clientes(id)
 );
 
--- 3. MATRIZ DE PRECIOS (Mano de Obra)
+-- =================================================================================
+-- 5. CATÁLOGO DE SERVICIOS
+-- =================================================================================
+CREATE TABLE catalogo_servicios (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL, 
+    descripcion TEXT,
+    frecuencia_recomendada_meses INT DEFAULT 0, -- 0 significa que no es recurrente
+    es_premium BOOLEAN DEFAULT FALSE,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =================================================================================
+-- 6. MATRIZ DE PRECIOS MANO DE OBRA
+-- =================================================================================
 CREATE TABLE precios_mano_obra (
     id SERIAL PRIMARY KEY,
     servicio_id INT NOT NULL,
+    motor_categoria VARCHAR(20) NOT NULL,
+    combustible VARCHAR(20) NOT NULL,
     precio_publico NUMERIC(10, 2) NOT NULL,
-    precio_membresia NUMERIC(10, 2) NOT NULL
+    precio_membresia NUMERIC(10, 2) NOT NULL,
+    creado_por_id INT,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_servicio_precio FOREIGN KEY (servicio_id) REFERENCES catalogo_servicios(id)
 );
 
--- 4. REFACCIONES (Inventario Inteligente)
+-- =================================================================================
+-- 7. TABLA REFACCIONES
+-- =================================================================================
 CREATE TABLE refacciones (
     id SERIAL PRIMARY KEY,
+    codigo_interno VARCHAR(50) UNIQUE,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT, 
+    compatibilidad TEXT,
     costo_proveedor NUMERIC(10, 2) NOT NULL,
     margen_ganancia_porcentaje INT DEFAULT 15,
-    -- El precio se calcula solo:
-    precio_venta_sugerido NUMERIC(10, 2) GENERATED ALWAYS AS ... STORED
+    precio_venta_sugerido NUMERIC(10, 2) GENERATED ALWAYS AS (costo_proveedor * (1 + margen_ganancia_porcentaje/100.0)) STORED,
+    stock_actual INT DEFAULT 0,
+    stock_minimo INT DEFAULT 1,
+    creado_por_id INT,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_audit_creador_ref FOREIGN KEY (creado_por_id) REFERENCES usuarios(id)
 );
 
--- 5. COTIZACIONES (Flujo de Venta)
+-- =================================================================================
+-- 8. COTIZACIONES / VENTAS
+-- =================================================================================
 CREATE TABLE cotizaciones (
     id SERIAL PRIMARY KEY,
-    estado VARCHAR(20) DEFAULT 'Borrador', -- Borrador -> Aprobada -> Pagada
-    requiere_factura BOOLEAN DEFAULT FALSE, -- Semáforo para contador
-    url_pdf VARCHAR(255) -- Gestión de archivos externa
+    cliente_id INT NOT NULL,
+    auto_id INT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    url_pdf VARCHAR(255), 
+    subtotal NUMERIC(10, 2),
+    iva_total NUMERIC(10, 2),
+    gran_total NUMERIC(10, 2),
+    estado VARCHAR(20) DEFAULT 'Borrador', -- TRIGGER ACTIVA CUANDO ESTO SEA 'Pagada'
+    requiere_factura BOOLEAN DEFAULT FALSE,
+    estatus_facturacion VARCHAR(20) DEFAULT 'No Requerida',
+    creado_por_id INT,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_cliente_cot FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+    CONSTRAINT fk_auto_cot FOREIGN KEY (auto_id) REFERENCES autos(id)
 );
 
+-- =================================================================================
+-- 9. DETALLES DE COTIZACIÓN
+-- =================================================================================
+CREATE TABLE detalles_cotizacion (
+    id SERIAL PRIMARY KEY,
+    cotizacion_id INT NOT NULL,
+    tipo VARCHAR(20) NOT NULL,
+    descripcion VARCHAR(255) NOT NULL,
+    servicio_id INT, 
+    refaccion_id INT,
+    costo_proveedor NUMERIC(10, 2) DEFAULT 0,
+    margen_ganancia_porcentaje INT DEFAULT 15,
+    precio_unitario_sin_iva NUMERIC(10, 2) NOT NULL,
+    cantidad INT DEFAULT 1,
+    total_renglon NUMERIC(10, 2),
+    CONSTRAINT fk_cotizacion_det FOREIGN KEY (cotizacion_id) REFERENCES cotizaciones(id) ON DELETE CASCADE,
+    CONSTRAINT fk_servicio_det FOREIGN KEY (servicio_id) REFERENCES catalogo_servicios(id)
+);
+```
 </details>
 
 ⚡ Instalación y Despliegue (Dev)
@@ -123,8 +251,8 @@ Prerrequisitos
 1. Base de Datos (Docker)
 
 Ejecutar el contenedor de PostgreSQL con las credenciales configuradas:
-Bash
 
+```
 docker run -d \
   --name pos-db \
   -e POSTGRES_USER=puntoventa_user \
@@ -132,32 +260,6 @@ docker run -d \
   -e POSTGRES_PASSWORD=Noviembre0511 \
   -p 5432:5432 \
   -v pos-db-data:/var/lib/postgresql/data \
-  postgres:16
-
-2. Ejecución del Proyecto
-
-Bash
-
-git clone [https://github.com/TU_USUARIO/sistema-taller.git](https://github.com/TU_USUARIO/sistema-taller.git)
-cd sistema-taller
-mvn clean javafx:run
-
-    Nota: Este proyecto es privado y propiedad intelectual de GESA Automotriz.
-
-
-***
-
-### ¿Cómo actualizarlo en GitHub?
-
-1.  Copia el código de arriba.
-2.  Ve a tu **Visual Studio Code**.
-3.  Abre el archivo `README.md` (debe estar en la raíz, junto al `pom.xml`). Si no existe, créalo.
-4.  Pega el contenido y guarda.
-5.  Sube los cambios a la nube:
-    ```bash
-    git add README.md
-    git commit -m "Docs: Actualizado README con lógica de negocio y diagrama"
-    git push
-    ```
-
-¡Cuando entres a tu página de GitHub, se verá increíble! 😎
+  postgres:16  
+```
+Nota: Este proyecto es privado y propiedad intelectual de GESA Automotriz.

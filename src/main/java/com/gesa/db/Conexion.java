@@ -7,8 +7,8 @@ import java.sql.SQLException;
 public class Conexion {
 
     // 1. Datos de tu Base de Datos (Docker)
-    private static final String URL = "jdbc:postgresql://localhost:5432/puntoventa_db";
-    private static final String USER = "puntoventa_user";
+    private static final String URL = "jdbc:postgresql://localhost:5432/puntoventa_dv";
+    private static final String USER = "postgres";
     private static final String PASSWORD = "Noviembre0511";
 
     // 2. Método para obtener la conexión (La Llave)

@@ -1,20 +1,34 @@
 module com.gesa {
-    requires javafx.controls;
-    requires javafx.fxml;
-    requires java.sql;
-    requires org.postgresql.jdbc;
-    requires atlantafx.base;
+    // ==========================================
+    // 1. MIS HERRAMIENTAS (REQUIRES)
+    // ==========================================
+    requires javafx.controls;       // Ventanas y botones
+    requires javafx.graphics;       // Gráficos
+    requires javafx.fxml;           // Leer archivos .fxml
+    requires java.sql;              // Conexión a BD general
+    requires org.postgresql.jdbc;   // Driver de Postgres
+    // requires atlantafx.base;     // (Descomenta solo si ya instalaste AtlantaFX)
 
-    // --- PERMISOS DE ACCESO (OPENS) ---
-    
-    // 1. Permiso para la raíz (App.java)
+    // ==========================================
+    // 2. PERMISOS DE ACCESO (OPENS)
+    // ==========================================
+
+    // ABRIR LA CARPETA RAÍZ
+    // Permite que JavaFX arranque tu App.java
     opens com.gesa to javafx.fxml;
-    
-    // 2. Permiso para los Controladores (Para que funcionen los botones)
-    opens com.gesa.controllers to javafx.fxml;
-    
-    // 3. Permiso para los Modelos (Para que la Tabla pueda leer los datos)
-    opens com.gesa.models to javafx.base;
 
+    // ABRIR LOS MODELOS (¡Vital para tablas!)
+    // Permite que la Tabla de JavaFX lea "getNombre()", "getId()", etc.
+    // Si borras esta línea, las tablas saldrán vacías o darán error.
+   // opens com.gesa.models to javafx.base;
+
+    // ABRIR LOS CONTROLADORES (¡Vital para botones!)
+    // Permite que los @FXML funcionen.
+    // ⚠️ OJO: Si borraste la carpeta 'com.gesa.controllers', COMENTA ESTA LÍNEA o dará error.
+    opens com.gesa.controllers to javafx.fxml;
+
+    // ==========================================
+    // 3. EXPORTAR LO PÚBLICO
+    // ==========================================
     exports com.gesa;
 }

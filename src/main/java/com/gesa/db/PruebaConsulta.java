@@ -1,6 +1,5 @@
-package com.gesa;
+package com.gesa.db;
 
-import com.gesa.db.Conexion; // Importamos tu llave maestra
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +17,7 @@ public class PruebaConsulta {
 
         // Usamos try-with-resources (cierra la conexión solo cuando termina)
         try (
-            //COmo funciona?
+            //Como funciona?
             // Primero llamamos la "api" que creamos , esa api nos da 2 valores , uno que es la llave si si conecta y otro que es null si no conecta
             //si recibimos la llave , se la ponemos a nuestra conection de nombre conn
             Connection conn = Conexion.getConexion();

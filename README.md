@@ -101,6 +101,7 @@ CREATE TABLE usuarios (
 CREATE TABLE clientes (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
+    apellidos VARCHAR(255) NOT NULL,
     telefono VARCHAR(20),
     email VARCHAR(100),
     rfc VARCHAR(13),

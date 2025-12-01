@@ -19,6 +19,8 @@ public class App extends Application {
 
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(Color.TRANSPARENT);
+        stage.setResizable(false); // <--- ESTA ES LA LÍNEA MÁGICA
+
 
         stage.setTitle("Login GESA");
         stage.setScene(scene);

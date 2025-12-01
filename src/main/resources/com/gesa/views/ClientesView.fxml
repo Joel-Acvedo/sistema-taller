@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.gesa.controllers.ClientesController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="900.0" prefWidth="1446.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gesa.controllers.ClientesController">
+    <children>
 
+        <AnchorPane prefHeight="92.0" prefWidth="1446.0" style="-fx-background-color: #10659e;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label layoutX="24.0" layoutY="8.0" prefHeight="77.0" prefWidth="363.0" text="Clientes" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="53.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+
+        <Button fx:id="btnNuevo" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" onAction="#nuevoCliente" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: Transparent; -fx-cursor: hand;" text="  Nuevo Cliente">
+            <graphic>
+                <ImageView fitHeight="33.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/mas.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+            <font>
+                <Font size="19.0" />
+            </font>
+        </Button>
+
+        <Button fx:id="btnEditar" layoutX="214.0" layoutY="100.0" mnemonicParsing="false" onAction="#editarCliente" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: Transparent; -fx-cursor: hand;" text="Editar Cliente">
+            <graphic>
+                <ImageView fitHeight="33.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/boton-editar.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+            <font>
+                <Font size="19.0" />
+            </font>
+        </Button>
+
+        <Button fx:id="btnEliminar" layoutX="414.0" layoutY="100.0" mnemonicParsing="false" onAction="#eliminarCliente" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: Transparent; -fx-cursor: hand;" text="Eliminar Cliente">
+            <graphic>
+                <ImageView fitHeight="33.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/cubo-de-la-basura.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+            <font>
+                <Font size="19.0" />
+            </font>
+        </Button>
+
+        <TextField fx:id="txtBuscar" layoutX="1050.0" layoutY="108.0" prefHeight="35.0" prefWidth="350.0" promptText="🔍 Buscar por nombre, RFC o teléfono..." style="-fx-background-radius: 20; -fx-border-color: #bdc3c7; -fx-border-radius: 20;" AnchorPane.rightAnchor="46.0">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </TextField>
+
+        <TableView fx:id="tablaClientes" layoutX="7.0" layoutY="151.0" prefHeight="730.0" prefWidth="1431.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="151.0">
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="53.0" text="ID" />
+                <TableColumn fx:id="colNombre" prefWidth="186.0" text="Nombre" />
+                <TableColumn fx:id="colApellidos" prefWidth="146.0" text="Apellidos" />
+                <TableColumn fx:id="colTelefono" minWidth="0.0" prefWidth="92.0" text="Telefono" />
+                <TableColumn fx:id="colEmail" prefWidth="154.0" text="Email" />
+                <TableColumn fx:id="colRFC" prefWidth="117.0" text="RFC" />
+                <TableColumn fx:id="colRazonSocial" minWidth="0.0" prefWidth="190.0" text="Razon Social Fiscal" />
+                <TableColumn fx:id="colRegimen" prefWidth="139.0" text="Regimen FIscal" />
+                <TableColumn fx:id="colCP" prefWidth="118.0" text="CP Fiscal" />
+                <TableColumn fx:id="colUsoCFDI" prefWidth="147.0" text="Uso CFDI" />
+                <TableColumn fx:id="colMembresia" prefWidth="88.0" text="Membresia" />
+            </columns>
+        </TableView>
+
+    </children>
 </AnchorPane>

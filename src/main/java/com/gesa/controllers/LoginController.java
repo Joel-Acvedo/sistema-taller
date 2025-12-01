@@ -72,8 +72,9 @@ public class LoginController {
             javafx.stage.Stage stage = new javafx.stage.Stage();
 
             stage.setTitle("Sistema GESA Automotriz");
-            stage.setScene(scene);
 
+            stage.setScene(scene);
+            stage.setResizable(false);
 
             // 3. Mostrar la nueva y cerrar la vieja
             stage.show();

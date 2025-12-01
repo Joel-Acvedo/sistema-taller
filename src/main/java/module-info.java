@@ -6,8 +6,8 @@ module com.gesa {
     requires javafx.graphics;       // Gráficos
     requires javafx.fxml;           // Leer archivos .fxml
     requires java.sql;              // Conexión a BD general
-    requires org.postgresql.jdbc;   // Driver de Postgres
-    // requires atlantafx.base;     // (Descomenta solo si ya instalaste AtlantaFX)
+    requires org.postgresql.jdbc;// Driver de Postgres
+    requires atlantafx.base;     // (Descomenta solo si ya instalaste AtlantaFX)
 
     // ==========================================
     // 2. PERMISOS DE ACCESO (OPENS)

@@ -25,13 +25,13 @@ public class ClientesController {
     // --- ACCIÓN: EDITAR CLIENTE ---
     @FXML
     void editarCliente(ActionEvent event) {
-        // Aquí validaremos que haya seleccionado a alguien de la tabla primero
-        // Object seleccionado = tablaClientes.getSelectionModel().getSelectedItem();
-        // if (seleccionado != null) {
-        //      abrirFormulario("Editar Cliente", seleccionado);
-        // } else {
-        //      mostrarAlerta("Selecciona un cliente primero");
-        // }
+        //Aquí validaremos que haya seleccionado a alguien de la tabla primero
+        Object seleccionado = tablaClientes.getSelectionModel().getSelectedItem();
+         if (seleccionado != null) {
+             abrirFormulario("Editar Cliente", seleccionado);
+         } else {
+    //          mostrarAlerta("Selecciona un cliente primero");
+         }
 
         System.out.println("Abriendo editor...");
     }

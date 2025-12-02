@@ -18,7 +18,7 @@
             </children>
         </AnchorPane>
 
-        <Button fx:id="btnNuevo" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: Transparent; -fx-cursor: hand;" text="  Nuevo">
+        <Button fx:id="btnNuevo" layoutX="14.0" layoutY="100.0" mnemonicParsing="false" onAction="#nuevoInv" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: Transparent; -fx-cursor: hand;" text="  Nuevo">
             <graphic>
                 <ImageView fitHeight="33.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -63,7 +63,7 @@
             </font>
         </TextField>
 
-        <TableView fx:id="tablaClientes" layoutX="7.0" layoutY="151.0" prefHeight="730.0" prefWidth="1431.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="151.0">
+        <TableView fx:id="tablaInventario" layoutX="7.0" layoutY="151.0" prefHeight="730.0" prefWidth="1431.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="151.0">
             <columns>
                 <TableColumn fx:id="colId" prefWidth="53.0" text="ID" />
                 <TableColumn fx:id="colNombre" prefWidth="186.0" text="Nombre" />

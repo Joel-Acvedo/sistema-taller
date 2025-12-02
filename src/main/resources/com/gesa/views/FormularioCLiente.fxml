@@ -8,7 +8,7 @@
    <children>
       <AnchorPane prefHeight="48.0" prefWidth="700.0" style="-fx-background-color: #10659e;">
          <children>
-            <Label layoutX="213.0" layoutY="1.0" prefHeight="54.0" prefWidth="274.0" text="Crear cliente" textFill="WHITE">
+            <Label fx:id="lblTitulo" layoutX="213.0" layoutY="1.0" prefHeight="54.0" prefWidth="274.0" text="Nuevo cliente" textFill="WHITE">
                <font>
                   <Font size="37.0" />
                </font>

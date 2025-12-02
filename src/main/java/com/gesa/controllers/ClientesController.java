@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class ClientesController {
 
+    // 1. Lo dejamos genérico <?> para que acepte lo que sea
     @FXML private TableView<?> tablaClientes;
     @FXML private TextField txtBuscar;
 
@@ -25,46 +26,48 @@ public class ClientesController {
     // --- ACCIÓN: EDITAR CLIENTE ---
     @FXML
     void editarCliente(ActionEvent event) {
-        //Aquí validaremos que haya seleccionado a alguien de la tabla primero
+        // 2. Usamos Object (Objeto genérico)
         Object seleccionado = tablaClientes.getSelectionModel().getSelectedItem();
-         if (seleccionado != null) {
-             abrirFormulario("Editar Cliente", seleccionado);
-         } else {
-    //          mostrarAlerta("Selecciona un cliente primero");
-         }
 
-        System.out.println("Abriendo editor...");
+        if (seleccionado != null) {
+            System.out.println("Abriendo editor (Genérico)...");
+            abrirFormulario("Editar Cliente", seleccionado);
+        } else {
+            System.out.println("❌ Selecciona algo primero");
+        }
     }
 
-    // --- ACCIÓN: ELIMINAR ---
     @FXML
     void eliminarCliente(ActionEvent event) {
         System.out.println("Eliminando...");
     }
 
-    // --- MÉTODO MAESTRO PARA ABRIR VENTANAS (POPUP) ---
+    // --- MÉTODO MAESTRO (MODIFICADO PARA USAR OBJECT) ---
     private void abrirFormulario(String titulo, Object clienteAEditar) {
         try {
-            // 1. Cargar el FXML del Formulario (Asegúrate de crearlo)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/gesa/views/FormularioCliente.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/gesa/views/FormularioCLiente.fxml"));
             Parent root = loader.load();
 
-            // 2. Crear el Escenario (Stage)
+            // 👇👇 AQUÍ ESTÁ EL CAMBIO 👇👇
+            // Pedimos el controlador
+            FormClienController controller = loader.getController();
+
+            // ⚠️ COMENTÉ ESTO TEMPORALMENTE:
+            // Como no queremos usar la clase Cliente ahorita, desactivamos el pase de datos.
+            // La ventana se abrirá, pero los campos saldrán vacíos siempre.
+
+            // if (clienteAEditar != null) {
+            //      controller.setCliente( (Cliente) clienteAEditar );
+            // }
+
             Stage stage = new Stage();
             stage.setTitle(titulo);
             stage.setScene(new Scene(root));
-
-            // 🔒 BLOQUEO: Esto hace que no puedan tocar la ventana de atrás
             stage.initModality(Modality.APPLICATION_MODAL);
-
-            // 🔒 TAMAÑO FIJO: Aquí respondes tu duda de "que no se modifique el tamaño"
             stage.setResizable(false);
+            stage.showAndWait();
 
-            // 3. Mostrar
-            stage.showAndWait(); // Wait significa: "Espera aquí hasta que cierren la ventana"
-
-            // Cuando se cierre la ventana, recargamos la tabla para ver los cambios
-            System.out.println("Formulario cerrado, recargando tabla...");
+            System.out.println("Formulario cerrado.");
 
         } catch (IOException e) {
             e.printStackTrace();

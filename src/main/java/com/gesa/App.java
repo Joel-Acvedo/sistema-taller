@@ -16,7 +16,6 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("views/LoginView.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load(), 650, 500);
-
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(Color.TRANSPARENT);
         stage.setResizable(false); // <--- ESTA ES LA LÍNEA MÁGICA

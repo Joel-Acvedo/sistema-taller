@@ -1,17 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.gesa.controllers.CotizacionController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="900.0" prefWidth="1446.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gesa.controllers.CotizacionController">
+    <children>
 
+        <AnchorPane prefHeight="92.0" prefWidth="1446.0" style="-fx-background-color: #10659e;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label layoutX="24.0" layoutY="8.0" text="Nueva Cotización" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="53.0" />
+                    </font>
+                </Label>
+                <Label layoutX="1200.0" layoutY="35.0" text="Folio: #00001" textFill="#e0e0e0" AnchorPane.rightAnchor="30.0">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
 
+        <HBox layoutX="20.0" layoutY="110.0" spacing="30.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <children>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Seleccionar Cliente" textFill="#7f8c8d">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <ComboBox fx:id="cmbCliente" prefHeight="40.0" prefWidth="400.0" promptText="Buscar Cliente..." style="-fx-background-color: #f1f2f6; -fx-background-radius: 10;" />
+                    </children>
+                </VBox>
 
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Vehículo" textFill="#7f8c8d">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <ComboBox fx:id="cmbVehiculo" prefHeight="40.0" prefWidth="400.0" promptText="Seleccionar Auto..." style="-fx-background-color: #f1f2f6; -fx-background-radius: 10;" />
+                    </children>
+                </VBox>
 
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Fecha" textFill="#7f8c8d">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <DatePicker fx:id="dtFecha" prefHeight="40.0" style="-fx-background-color: #f1f2f6;" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <Separator layoutX="20.0" layoutY="190.0" prefWidth="1400.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+
+        <HBox alignment="BOTTOM_LEFT" layoutX="20.0" layoutY="210.0" spacing="15.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <children>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Descripción del Servicio o Refacción" />
+                        <TextField fx:id="txtDescripcion" prefHeight="35.0" promptText="Ej. Cambio de Aceite Sintético" style="-fx-background-radius: 10;" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Cantidad" />
+                        <TextField fx:id="txtCantidad" prefHeight="35.0" prefWidth="80.0" promptText="1" style="-fx-background-radius: 10;" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Precio Unitario" />
+                        <TextField fx:id="txtPrecio" prefHeight="35.0" prefWidth="120.0" promptText="0.00" style="-fx-background-radius: 10;" />
+                    </children>
+                </VBox>
+
+                <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregarItem" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: #27ae60; -fx-background-radius: 10; -fx-cursor: hand;" text="Agregar +" textFill="WHITE">
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Button>
+            </children>
+        </HBox>
+
+        <TableView fx:id="tablaDetalles" layoutX="20.0" layoutY="280.0" prefHeight="400.0" prefWidth="1406.0" style="-fx-background-color: transparent; -fx-border-color: #ecf0f1;" AnchorPane.bottomAnchor="220.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="280.0">
+            <columns>
+                <TableColumn fx:id="colCantidad" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Cant." />
+                <TableColumn fx:id="colDescripcion" prefWidth="800.0" text="Descripción" />
+                <TableColumn fx:id="colPrecio" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="P. Unitario" />
+                <TableColumn fx:id="colImporte" prefWidth="150.0" style="-fx-alignment: CENTER-RIGHT;" text="Importe" />
+                <TableColumn fx:id="colAccion" prefWidth="100.0" style="-fx-alignment: CENTER;" text="Quitar" />
+            </columns>
+        </TableView>
+
+        <HBox layoutX="20.0" layoutY="700.0" spacing="50.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
+            <children>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Observaciones / Notas para el cliente:" textFill="#7f8c8d" />
+                        <TextArea prefHeight="100.0" prefWidth="200.0" promptText="Ej. Garantía de 30 días. No incluye alineación..." style="-fx-background-radius: 10;" />
+                    </children>
+                </VBox>
+
+                <VBox alignment="TOP_RIGHT" prefWidth="300.0" spacing="10.0">
+                    <children>
+                        <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                            <children>
+                                <Label text="Subtotal:" textFill="#7f8c8d"><font><Font size="18.0" /></font></Label>
+                                <Label fx:id="lblSubtotal" text="0.00"><font><Font name="System Bold" size="18.0" /></font></Label>
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                            <children>
+                                <Label text="IVA (16%):" textFill="#7f8c8d"><font><Font size="18.0" /></font></Label>
+                                <Label fx:id="lblIVA" text="0.00"><font><Font name="System Bold" size="18.0" /></font></Label>
+                            </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" />
+                        <HBox alignment="CENTER_RIGHT" spacing="20.0">
+                            <children>
+                                <Label text="TOTAL:" textFill="#2c3e50"><font><Font name="System Bold" size="28.0" /></font></Label>
+                                <Label fx:id="lblTotal" text="0.00" textFill="#10659e"><font><Font name="System Bold" size="28.0" /></font></Label>
+                            </children>
+                        </HBox>
+
+                        <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                            <children>
+                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #95a5a6; -fx-background-radius: 20; -fx-cursor: hand;" text="Cancelar" textFill="WHITE">
+                                    <font><Font size="14.0" /></font>
+                                </Button>
+                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #10659e; -fx-background-radius: 20; -fx-cursor: hand;" text="Guardar / PDF" textFill="WHITE">
+                                    <font><Font name="System Bold" size="14.0" /></font>
+                                </Button>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="20.0" />
+                            </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+    </children>
 </AnchorPane>

@@ -51,7 +51,7 @@ public class MainLayoutController {
             mainPane.setCenter(vista);
 
         } catch (IOException e) {
-            System.err.println("❌ Error al cargar la vista: " + nombreArchivo);
+            System.err.println("Error al cargar la vista: " + nombreArchivo);
             e.printStackTrace();
         }
     }

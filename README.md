@@ -142,6 +142,9 @@ CREATE TABLE autos (
     combustible VARCHAR(20) NOT NULL,
     placas VARCHAR(20),
     vin VARCHAR(50),
+    color VARCHAR(20),
+    kilometraje INT,
+    
     
     -- 🔔 EL SECRETARIO AUTOMÁTICO MEJORADO
     fecha_ultimo_servicio DATE, -- Se llena solo con el Trigger

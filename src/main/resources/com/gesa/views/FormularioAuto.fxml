@@ -20,6 +20,7 @@
         <Label layoutX="47.0" layoutY="80.0" text="Cliente (Dueño)">
             <font><Font size="19.0" /></font>
         </Label>
+
         <ComboBox fx:id="cmbCliente" layoutX="47.0" layoutY="115.0" prefHeight="30.0" prefWidth="615.0" promptText="Seleccionar Cliente..." style="-fx-background-color: #f0f0f0; -fx-border-color: #bdc3c7;" />
 
         <Label layoutX="47.0" layoutY="170.0" text="Marca">
@@ -62,13 +63,13 @@
         </Label>
         <TextField fx:id="txtMotor" layoutX="370.0" layoutY="475.0" prefHeight="30.0" prefWidth="290.0" promptText="Ej. 1.6L, 4 Cilindros..." />
 
-        <Button fx:id="btnGuardar" layoutX="395.0" layoutY="653.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="122.0" style="-fx-background-color: #10659e; -fx-background-radius: 30; -fx-cursor: hand;" text="Guardar" textFill="WHITE">
+        <Button fx:id="btnGuardar" onAction="#actionGuardar" layoutX="395.0" layoutY="653.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="122.0" style="-fx-background-color: #10659e; -fx-background-radius: 30; -fx-cursor: hand;" text="Guardar" textFill="WHITE">
             <font>
                 <Font size="22.0" />
             </font>
         </Button>
 
-        <Button fx:id="btnCancelar" layoutX="540.0" layoutY="653.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="122.0" style="-fx-background-radius: 30; -fx-cursor: hand;" text="Cancelar">
+        <Button fx:id="btnCancelar" onAction="#actionCancelar" layoutX="540.0" layoutY="653.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="122.0" style="-fx-background-radius: 30; -fx-cursor: hand;" text="Cancelar">
             <font>
                 <Font size="22.0" />
             </font>

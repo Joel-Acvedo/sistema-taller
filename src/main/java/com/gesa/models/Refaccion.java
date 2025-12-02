@@ -15,6 +15,7 @@ public class Refaccion {
     // Inventario
     private int stockActual;
     private int stockMinimo;
+    private boolean eliminado;
 
     public Refaccion() {}
 
@@ -69,6 +70,9 @@ public class Refaccion {
 
     public int getStockMinimo() { return stockMinimo; }
     public void setStockMinimo(int stockMinimo) { this.stockMinimo = stockMinimo; }
+
+    public boolean isEliminado() { return eliminado; }
+    public void setEliminado(boolean eliminado) { this.eliminado = eliminado;}
 
     @Override
     public String toString() {

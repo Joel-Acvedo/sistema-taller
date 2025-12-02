@@ -44,7 +44,7 @@
             </font>
         </Button>
 
-        <Button fx:id="btnEliminar" layoutX="414.0" layoutY="100.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: Transparent; -fx-cursor: hand;" text="Eliminar ">
+        <Button fx:id="btnEliminar" layoutX="414.0" layoutY="100.0" mnemonicParsing="false" onAction="#eliminarInv" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: Transparent; -fx-cursor: hand;" text="Eliminar ">
             <graphic>
                 <ImageView fitHeight="33.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
                     <image>

@@ -17,6 +17,7 @@ module com.gesa {
     // Permite que JavaFX arranque tu App.java
     opens com.gesa to javafx.fxml;
 
+
     // ABRIR LOS MODELOS (¡Vital para tablas!)
     // Permite que la Tabla de JavaFX lea "getNombre()", "getId()", etc.
     // Si borras esta línea, las tablas saldrán vacías o darán error.
@@ -24,8 +25,8 @@ module com.gesa {
 
     // ABRIR LOS CONTROLADORES (¡Vital para botones!)
     // Permite que los @FXML funcionen.
-    // ⚠️ OJO: Si borraste la carpeta 'com.gesa.controllers', COMENTA ESTA LÍNEA o dará error.
     opens com.gesa.controllers to javafx.fxml;
+    opens com.gesa.models to javafx.base;
 
     // ==========================================
     // 3. EXPORTAR LO PÚBLICO

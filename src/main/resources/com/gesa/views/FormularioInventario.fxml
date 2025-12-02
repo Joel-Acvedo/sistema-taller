@@ -4,55 +4,39 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gesa.controllers.FormInvController">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gesa.controllers.FormInvController">
     <children>
-        <AnchorPane prefHeight="48.0" prefWidth="700.0" style="-fx-background-color: #10659e;">
+        <AnchorPane prefHeight="60.0" prefWidth="700.0" style="-fx-background-color: #10659e;">
             <children>
-                <Label layoutX="213.0" layoutY="1.0" prefHeight="54.0" prefWidth="274.0" text="Agregar Pieza" textFill="WHITE">
+                <Label fx:id="lblTitulo" alignment="CENTER" layoutY="5.0" prefHeight="50.0" prefWidth="700.0" text="Agregar Pieza" textFill="WHITE">
                     <font>
-                        <Font size="37.0" />
+                        <Font name="System Bold" size="37.0" />
                     </font>
                 </Label>
-            </children></AnchorPane>
-        <Label layoutX="24.0" layoutY="92.0" text="Nombre">
-            <font>
-                <Font size="19.0" />
-            </font>
-        </Label>
-        <Label layoutX="358.0" layoutY="92.0" text="Codigo Interno">
-            <font>
-                <Font size="19.0" />
-            </font>
-        </Label>
-        <Label layoutX="24.0" layoutY="199.0" text="Costo Provedor">
-            <font>
-                <Font size="19.0" />
-            </font>
-        </Label>
-        <Label layoutX="312.0" layoutY="199.0" text="Stock Actual">
-            <font>
-                <Font size="19.0" />
-            </font>
-        </Label>
-        <Label layoutX="24.0" layoutY="290.0" prefHeight="28.0" prefWidth="158.0" text="Descripcion">
-            <font>
-                <Font size="19.0" />
-            </font>
-        </Label>
-        <TextField layoutX="14.0" layoutY="128.0" prefHeight="25.0" prefWidth="296.0" promptText="Nombre" />
-        <TextField layoutX="356.0" layoutY="128.0" prefHeight="25.0" prefWidth="322.0" promptText="Codigo Interno" />
-        <TextField layoutX="14.0" layoutY="240.0" prefHeight="25.0" prefWidth="267.0" promptText="Costo Provedor" />
-        <TextField layoutX="312.0" layoutY="239.0" prefHeight="25.0" prefWidth="361.0" promptText="Stock Actual" />
-        <Button layoutX="383.0" layoutY="639.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="122.0" style="-fx-background-color: #10659e; -fx-background-radius: 30;" text="Guardar" textFill="WHITE">
-            <font>
-                <Font size="22.0" />
-            </font>
+            </children>
+        </AnchorPane>
+
+        <Label layoutX="24.0" layoutY="92.0" text="Nombre"><font><Font size="19.0" /></font></Label>
+        <TextField fx:id="txtNombre" layoutX="24.0" layoutY="128.0" prefHeight="30.0" prefWidth="300.0" promptText="Ej. Filtro de Aceite" />
+
+        <Label layoutX="358.0" layoutY="92.0" text="Codigo Interno"><font><Font size="19.0" /></font></Label>
+        <TextField fx:id="txtCodigo" layoutX="358.0" layoutY="128.0" prefHeight="30.0" prefWidth="300.0" promptText="Ej. FIL-001" />
+
+        <Label layoutX="24.0" layoutY="199.0" text="Costo Provedor"><font><Font size="19.0" /></font></Label>
+        <TextField fx:id="txtCosto" layoutX="24.0" layoutY="240.0" prefHeight="30.0" prefWidth="250.0" promptText="0.00" />
+
+        <Label layoutX="358.0" layoutY="199.0" text="Stock Actual"><font><Font size="19.0" /></font></Label>
+        <TextField fx:id="txtStock" layoutX="358.0" layoutY="240.0" prefHeight="30.0" prefWidth="250.0" promptText="0" />
+
+        <Label layoutX="24.0" layoutY="290.0" text="Descripcion"><font><Font size="19.0" /></font></Label>
+        <TextArea fx:id="txtDescripcion" layoutX="24.0" layoutY="320.0" prefHeight="80.0" prefWidth="634.0" promptText="Compatible con tsuru 2016 nueva ...." />
+
+        <Button onAction="#actionGuardar" layoutX="383.0" layoutY="430.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-color: #10659e; -fx-background-radius: 30; -fx-cursor: hand;" text="Guardar" textFill="WHITE">
+            <font><Font size="22.0" /></font>
         </Button>
-        <Button layoutX="542.0" layoutY="639.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="122.0" style="-fx-background-radius: 30;" text="Cancelar">
-            <font>
-                <Font size="22.0" />
-            </font>
+
+        <Button onAction="#actionCancelar" layoutX="528.0" layoutY="430.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="130.0" style="-fx-background-radius: 30; -fx-cursor: hand;" text="Cancelar">
+            <font><Font size="22.0" /></font>
         </Button>
-      <TextArea layoutX="25.0" layoutY="331.0" prefHeight="200.0" prefWidth="517.0" promptText="Compatible con tsuru 2016 nueva ...." />
     </children>
 </AnchorPane>

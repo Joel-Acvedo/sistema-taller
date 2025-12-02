@@ -112,7 +112,7 @@ CREATE TABLE clientes (
     email_facturacion VARCHAR(100),
     creado_por_id INT,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    eliminado BOOLEAN DEFAULT FALSE NOT NULL ,
+    eliminado BOOLEAN DEFAULT FALSE NOT NULL,
     CONSTRAINT fk_audit_creador_cli FOREIGN KEY (creado_por_id) REFERENCES usuarios(id)
 );
 
@@ -197,6 +197,7 @@ CREATE TABLE refacciones (
     stock_minimo INT DEFAULT 1,
     creado_por_id INT,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    eliminado BOOLEAN DEFAULT FALSE NOT NULL,
     CONSTRAINT fk_audit_creador_ref FOREIGN KEY (creado_por_id) REFERENCES usuarios(id)
 );
 

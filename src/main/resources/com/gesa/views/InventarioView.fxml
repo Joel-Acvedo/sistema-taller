@@ -31,7 +31,7 @@
             </font>
         </Button>
 
-        <Button fx:id="btnEditar" layoutX="214.0" layoutY="100.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: Transparent; -fx-cursor: hand;" text="Editar ">
+        <Button fx:id="btnEditar" layoutX="214.0" layoutY="100.0" mnemonicParsing="false" onAction="#editarInv" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: Transparent; -fx-cursor: hand;" text="Editar ">
             <graphic>
                 <ImageView fitHeight="33.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -57,7 +57,7 @@
             </font>
         </Button>
 
-        <TextField fx:id="txtBuscar" layoutX="1050.0" layoutY="108.0" prefHeight="35.0" prefWidth="350.0" promptText="🔍 Buscar por nombre, RFC o teléfono..." style="-fx-background-radius: 20; -fx-border-color: #bdc3c7; -fx-border-radius: 20;" AnchorPane.rightAnchor="46.0">
+        <TextField fx:id="txtBuscar" layoutX="1050.0" layoutY="108.0" prefHeight="35.0" prefWidth="350.0" promptText="🔍 Buscar por código, nombre..." style="-fx-background-radius: 20; -fx-border-color: #bdc3c7; -fx-border-radius: 20;" AnchorPane.rightAnchor="46.0">
             <font>
                 <Font size="14.0" />
             </font>
@@ -67,11 +67,12 @@
             <columns>
                 <TableColumn fx:id="colId" prefWidth="53.0" text="ID" />
                 <TableColumn fx:id="colNombre" prefWidth="186.0" text="Nombre" />
-                <TableColumn fx:id="colApellidos" prefWidth="146.0" text="Codigo Interno" />
-                <TableColumn fx:id="colTelefono" minWidth="0.0" prefWidth="160.0" text="Costo Provedor" />
-                <TableColumn fx:id="colEmail" prefWidth="171.0" text="Precio Venta Sugerido" />
-                <TableColumn fx:id="colRFC" prefWidth="161.0" text="Stock Actual" />
-                <TableColumn fx:id="colRazonSocial" minWidth="0.0" prefWidth="553.0" text="Descripcion" />
+
+                <TableColumn fx:id="colCodigo" prefWidth="146.0" text="Codigo Interno" />
+                <TableColumn fx:id="colCosto" minWidth="0.0" prefWidth="160.0" text="Costo Provedor" />
+                <TableColumn fx:id="colPrecio" prefWidth="171.0" text="Precio Venta Sugerido" />
+                <TableColumn fx:id="colStock" prefWidth="161.0" text="Stock Actual" />
+                <TableColumn fx:id="colDescripcion" minWidth="0.0" prefWidth="553.0" text="Descripcion" />
             </columns>
         </TableView>
 

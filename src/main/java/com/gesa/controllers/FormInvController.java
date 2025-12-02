@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 public class FormInvController {
 
+    // 1. Elementos Visuales (Fx:id)
     @FXML private Label lblTitulo;
     @FXML private TextField txtNombre;
     @FXML private TextField txtCodigo;
@@ -16,64 +17,81 @@ public class FormInvController {
     @FXML private TextField txtStock;
     @FXML private TextArea txtDescripcion;
 
+    // 2. Herramientas
     private Refaccion refaccionEnEdicion;
     private RefaccionDAO dao = new RefaccionDAO();
 
-    // Recibir datos
+    // 3. Recibir Datos (Setear)
     public void setRefaccion(Refaccion r) {
         this.refaccionEnEdicion = r;
 
         if (r != null) {
-            // EDICIÓN
+            // --- MODO EDICIÓN ---
             lblTitulo.setText("Editar Pieza");
-            txtNombre.setText(r.getNombre());
-            txtCodigo.setText(r.getCodigoInterno());
-            txtCosto.setText(String.valueOf(r.getCostoProveedor()));
-            txtStock.setText(String.valueOf(r.getStockActual()));
-            txtDescripcion.setText(r.getDescripcion());
+            setTextoSeguro(txtNombre, r.getNombre());
+            setTextoSeguro(txtCodigo, r.getCodigoInterno());
+            setTextoSeguro(txtCosto, String.valueOf(r.getCostoProveedor()));
+            setTextoSeguro(txtStock, String.valueOf(r.getStockActual()));
+            if (txtDescripcion != null) txtDescripcion.setText(r.getDescripcion());
         } else {
-            // NUEVO
+            // --- MODO NUEVO ---
             lblTitulo.setText("Agregar Pieza");
             limpiar();
         }
     }
 
+    private void setTextoSeguro(TextField campo, String valor) {
+        if (campo != null) campo.setText(valor != null ? valor : "");
+    }
+
+    // 4. BOTÓN GUARDAR (Aquí estaba el detalle)
     @FXML
     void actionGuardar(ActionEvent event) {
         try {
-            // Validaciones
+            // A. Validaciones
             if (txtNombre.getText().isEmpty() || txtCosto.getText().isEmpty()) {
-                mostrarAlerta("Error", "Nombre y Costo son obligatorios");
+                mostrarAlerta("Error", "Nombre y Costo son obligatorios, master.");
                 return;
             }
 
-            // Crear Objeto
-            Refaccion nuevaRef = new Refaccion();
-            nuevaRef.setNombre(txtNombre.getText());
-            nuevaRef.setCodigoInterno(txtCodigo.getText());
-            nuevaRef.setDescripcion(txtDescripcion.getText());
+            // B. Crear Objeto con los datos nuevos
+            Refaccion refaccionGuardar = new Refaccion();
+            refaccionGuardar.setNombre(txtNombre.getText());
+            refaccionGuardar.setCodigoInterno(txtCodigo.getText());
+            refaccionGuardar.setDescripcion(txtDescripcion.getText());
 
-            // Convertir textos a números
+            // Convertir números (Cuidado con el texto vacío)
             double costo = Double.parseDouble(txtCosto.getText());
             int stock = txtStock.getText().isEmpty() ? 0 : Integer.parseInt(txtStock.getText());
 
-            nuevaRef.setCostoProveedor(costo);
-            nuevaRef.setStockActual(stock);
-            // El precio venta se calcula solo en el modelo
+            refaccionGuardar.setCostoProveedor(costo);
+            refaccionGuardar.setStockActual(stock);
 
             boolean exito;
+
+            // C. Decidir si es INSERT o UPDATE
             if (refaccionEnEdicion == null) {
-                exito = dao.guardar(nuevaRef);
+                // NUEVO
+                exito = dao.guardar(refaccionGuardar);
             } else {
-                nuevaRef.setId(refaccionEnEdicion.getId());
-                // exito = dao.editar(nuevaRef); // Tienes que crear este método en tu DAO
-                exito = true; // Temporal
+                // EDICIÓN (¡ESTO FALTABA!)
+                // 1. Pasamos el ID original al objeto nuevo
+                refaccionGuardar.setId(refaccionEnEdicion.getId());
+
+                // 2. Llamamos al DAO real
+                exito = dao.editar(refaccionGuardar);
             }
 
-            if (exito) cerrarVentana();
+            // D. Resultado
+            if (exito) {
+                mostrarAlerta("Éxito", "Inventario actualizado correctamente.");
+                cerrarVentana();
+            } else {
+                mostrarAlerta("Error", "No se pudo guardar en la BD.");
+            }
 
         } catch (NumberFormatException e) {
-            mostrarAlerta("Error", "El costo y stock deben ser números válidos");
+            mostrarAlerta("Error", "El costo y stock deben ser números (ej. 150.50).");
         }
     }
 
@@ -88,11 +106,11 @@ public class FormInvController {
     }
 
     private void limpiar() {
-        txtNombre.clear();
-        txtCodigo.clear();
-        txtCosto.clear();
-        txtStock.clear();
-        txtDescripcion.clear();
+        if(txtNombre != null) txtNombre.clear();
+        if(txtCodigo != null) txtCodigo.clear();
+        if(txtCosto != null) txtCosto.clear();
+        if(txtStock != null) txtStock.clear();
+        if(txtDescripcion != null) txtDescripcion.clear();
     }
 
     private void mostrarAlerta(String titulo, String msg) {
